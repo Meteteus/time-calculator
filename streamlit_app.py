@@ -132,4 +132,3 @@ for i, row in enumerate(st.session_state["time_rows"]):
     with col4:
         if st.button(f"-", key=f"remove_row_{i}"):
             st.session_state["time_rows"].pop(i)  # Remove the row when "-" button is clicked
-            st.experimental_rerun()  # Refresh the page to reflect changes
