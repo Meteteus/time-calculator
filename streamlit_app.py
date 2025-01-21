@@ -40,27 +40,37 @@ with col3:
 
 # Button to calculate the time difference
 if st.button("Calculate"):
-    # If the fields are empty, treat them as 0 when calculating
-    start_hours = start_hours if start_hours is not None else 0
-    start_minutes = start_minutes if start_minutes is not None else 0
-    start_seconds = start_seconds if start_seconds is not None else 0
-    end_hours = end_hours if end_hours is not None else 0
-    end_minutes = end_minutes if end_minutes is not None else 0
-    end_seconds = end_seconds if end_seconds is not None else 0
-
-    start_time = (start_hours, start_minutes, start_seconds)
-    end_time = (end_hours, end_minutes, end_seconds)
-
-    # Check if end time is earlier than start time
-    start_seconds_total = start_time[0]*3600 + start_time[1]*60 + start_time[2]
-    end_seconds_total = end_time[0]*3600 + end_time[1]*60 + end_time[2]
-
-    if end_seconds_total < start_seconds_total:
-        st.error("End time cannot be earlier than start time. Please enter valid times.")
+    # Check if the input is valid
+    if (start_hours, start_minutes, start_seconds) == (0, 0, 0) and (end_hours, end_minutes, end_seconds) == (0, 0, 0):
+        st.warning("Both start and end times are set to 0. Please input valid times.")
     else:
-        # Calculate time difference
-        elapsed_seconds = calculate_time_difference(start_time, end_time)
+        # If the fields are empty, treat them as 0 when calculating
+        start_hours = start_hours if start_hours is not None else 0
+        start_minutes = start_minutes if start_minutes is not None else 0
+        start_seconds = start_seconds if start_seconds is not None else 0
+        end_hours = end_hours if end_hours is not None else 0
+        end_minutes = end_minutes if end_minutes is not None else 0
+        end_seconds = end_seconds if end_seconds is not None else 0
 
-        # Convert elapsed time to hh:mm:ss
-        time_str = convert_seconds_to_hhmmss(elapsed_seconds)
-        st.success(f"Time elapsed: {time_str}")
+        start_time = (start_hours, start_minutes, start_seconds)
+        end_time = (end_hours, end_minutes, end_seconds)
+
+        # Check if end time is earlier than start time
+        start_seconds_total = start_time[0]*3600 + start_time[1]*60 + start_time[2]
+        end_seconds_total = end_time[0]*3600 + end_time[1]*60 + end_time[2]
+
+        if end_seconds_total < start_seconds_total:
+            st.error("End time cannot be earlier than start time. Please enter valid times.")
+        else:
+            # Calculate time difference
+            elapsed_seconds = calculate_time_difference(start_time, end_time)
+
+            # Convert elapsed time to hh:mm:ss
+            time_str = convert_seconds_to_hhmmss(elapsed_seconds)
+            st.success(f"Time elapsed: {time_str}")
+
+# Reset button to clear input fields
+if st.button("Reset"):
+    start_hours = start_minutes = start_seconds = 0
+    end_hours = end_minutes = end_seconds = 0
+    st.experimental_rerun()
