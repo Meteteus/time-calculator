@@ -22,29 +22,30 @@ st.write("Enter start time and end time, name your calculation, and view your hi
 if "history" not in st.session_state:
     st.session_state["history"] = []
 
-# Initialize the reset confirmation flag in session state if not already there
-if "reset_confirm" not in st.session_state:
-    st.session_state["reset_confirm"] = False
+# Create a form for the user input
+with st.form(key="calculation_form"):
+    # Input: Start Time (3 columns for hours, minutes, seconds)
+    st.subheader("Start Time")
+    col1, col2, col3 = st.columns(3)
+    start_hours = col1.number_input("Hours", min_value=0, max_value=23, key="start_hours", value=0)
+    start_minutes = col2.number_input("Minutes", min_value=0, max_value=59, key="start_minutes", value=0)
+    start_seconds = col3.number_input("Seconds", min_value=0, max_value=59, key="start_seconds", value=0)
 
-# Input: Start Time (3 columns for hours, minutes, seconds)
-st.subheader("Start Time")
-col1, col2, col3 = st.columns(3)
-start_hours = col1.number_input("Hours", min_value=0, max_value=23, key="start_hours", value=0)
-start_minutes = col2.number_input("Minutes", min_value=0, max_value=59, key="start_minutes", value=0)
-start_seconds = col3.number_input("Seconds", min_value=0, max_value=59, key="start_seconds", value=0)
+    # Input: End Time (3 columns for hours, minutes, seconds)
+    st.subheader("End Time")
+    col1, col2, col3 = st.columns(3)
+    end_hours = col1.number_input("Hours", min_value=0, max_value=23, key="end_hours", value=0)
+    end_minutes = col2.number_input("Minutes", min_value=0, max_value=59, key="end_minutes", value=0)
+    end_seconds = col3.number_input("Seconds", min_value=0, max_value=59, key="end_seconds", value=0)
 
-# Input: End Time (3 columns for hours, minutes, seconds)
-st.subheader("End Time")
-col1, col2, col3 = st.columns(3)
-end_hours = col1.number_input("Hours", min_value=0, max_value=23, key="end_hours", value=0)
-end_minutes = col2.number_input("Minutes", min_value=0, max_value=59, key="end_minutes", value=0)
-end_seconds = col3.number_input("Seconds", min_value=0, max_value=59, key="end_seconds", value=0)
+    # Input: Name for the calculation
+    calculation_name = st.text_input("Name this calculation", "")
 
-# Input: Name for the calculation
-calculation_name = st.text_input("Name this calculation", "")
+    # Submit button for the form
+    submit_button = st.form_submit_button("Calculate")
 
-# Button to calculate the time difference
-if st.button("Calculate", key="calculate", help="Click to calculate time elapsed"):
+# Button logic after form submission
+if submit_button:
     # If the fields are empty, treat them as 0 when calculating
     start_hours = start_hours if start_hours is not None else 0
     start_minutes = start_minutes if start_minutes is not None else 0
@@ -82,29 +83,3 @@ if st.session_state["history"]:
     st.subheader("Calculation History")
     for idx, entry in enumerate(st.session_state["history"], start=1):
         st.write(f"{idx}. {entry['name']}: {entry['result']}")
-
-# Button to reset history
-reset_history = st.button("Reset History", key="reset", help="Click to reset your history")
-
-# Show reset confirmation if clicked
-if reset_history:
-    st.session_state["reset_confirm"] = True  # Set the reset confirmation flag to True
-
-if st.session_state["reset_confirm"]:
-    # Show confirmation and cancel buttons
-    col1, col2 = st.columns(2)
-    with col1:
-        confirm_reset = st.button("Confirm Reset History")
-    with col2:
-        cancel_reset = st.button("Cancel Reset")
-
-    # If "Confirm Reset History" button is pressed
-    if confirm_reset:
-        st.session_state["history"] = []  # Clear the history
-        st.session_state["reset_confirm"] = False  # Hide the confirmation buttons
-        st.success("History has been reset.")  # Show success message
-
-    # If "Cancel Reset" button is pressed
-    if cancel_reset:
-        st.session_state["reset_confirm"] = False  # Hide the confirmation buttons
-        st.warning("History reset canceled.")  # Show warning message
