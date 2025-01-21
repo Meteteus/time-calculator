@@ -83,18 +83,17 @@ if submit_button:
 
         st.success(f"Time elapsed: {time_str}")
 
-# Display the history
+# Display the history with checkboxes next to each calculation
 if st.session_state["history"]:
     st.subheader("Calculation History")
     selected_calculations = []
-    
+
     for idx, entry in enumerate(st.session_state["history"], start=1):
         # Display each calculation with a checkbox to select it
-        with st.expander(f"{idx}. {entry['name']}: {entry['result']}"):
-            checkbox = st.checkbox(f"Include {entry['name']}", key=f"checkbox_{idx}")
-            if checkbox:
-                selected_calculations.append(entry['result'])
-    
+        checkbox = st.checkbox(f"Include {entry['name']} - {entry['result']}", key=f"checkbox_{idx}")
+        if checkbox:
+            selected_calculations.append(entry['result'])
+
     # Button to sum the selected results
     if st.button("Sum Selected Calculations"):
         if selected_calculations:
