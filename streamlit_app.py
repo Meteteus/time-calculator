@@ -110,3 +110,8 @@ if st.session_state["history"]:
             st.success(f"Total time for selected calculations ({selected_names_str}): {total_time}")
         else:
             st.warning("No calculations selected to sum.")
+
+# Button to reset the history
+if st.button("Reset Calculations", key="reset_calculations"):
+    st.session_state["history"] = []  # Reset history
+    st.success("Calculation history has been reset.")
