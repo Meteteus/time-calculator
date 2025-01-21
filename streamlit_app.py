@@ -122,10 +122,14 @@ if st.button("Add Row of Time"):
 
 # Display each row of time input
 for i, row in enumerate(st.session_state["time_rows"]):
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns([3, 3, 3, 1])  # Adding one more column for the "-" button
     with col1:
         row["hours"] = st.number_input(f"Row {i+1} - Hours", min_value=0, max_value=23, value=row["hours"], key=f"hours_{i}")
     with col2:
         row["minutes"] = st.number_input(f"Row {i+1} - Minutes", min_value=0, max_value=59, value=row["minutes"], key=f"minutes_{i}")
     with col3:
         row["seconds"] = st.number_input(f"Row {i+1} - Seconds", min_value=0, max_value=59, value=row["seconds"], key=f"seconds_{i}")
+    with col4:
+        if st.button(f"-", key=f"remove_row_{i}"):
+            st.session_state["time_rows"].pop(i)  # Remove the row when "-" button is clicked
+            st.experimental_rerun()  # Refresh the page to reflect changes
