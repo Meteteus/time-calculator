@@ -38,6 +38,19 @@ with col2:
 with col3:
     end_seconds = st.number_input("Seconds", min_value=0, max_value=59, key="end_seconds", value=0)
 
+# Add custom JavaScript to highlight the field on focus
+highlight_input_js = """
+    <script>
+        const inputs = document.querySelectorAll('input[type="number"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.select();
+            });
+        });
+    </script>
+"""
+st.markdown(highlight_input_js, unsafe_allow_html=True)
+
 # Button to calculate the time difference
 if st.button("Calculate"):
     # If the fields are empty, treat them as 0 when calculating
