@@ -40,7 +40,7 @@ end_seconds = col3.number_input("Seconds", min_value=0, max_value=59, key="end_s
 # Input: Name for the calculation
 calculation_name = st.text_input("Name this calculation", "")
 
-# Add custom CSS to style the buttons
+# Add custom CSS to style the buttons and modal
 st.markdown("""
     <style>
         .stButton button {
@@ -62,6 +62,46 @@ st.markdown("""
         }
         .stButton>button:last-child:hover {
             background-color: darkred; /* Darker red */
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+            overflow: auto;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .modal-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .confirm-btn {
+            background-color: green;
+            color: white;
+        }
+        .cancel-btn {
+            background-color: gray;
+            color: white;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -104,30 +144,27 @@ if st.button("Calculate", key="calculate", help="Click to calculate time elapsed
 
             st.success(f"Time elapsed: {time_str}")
 
-# Provide an option to download the history
+# Display the history download button
 if st.session_state["history"]:
     st.subheader("Download History")
     # Convert history to JSON for easy download
     history_json = json.dumps(st.session_state["history"], indent=4)
     st.download_button("Download History", data=history_json, file_name="calculation_history.json", mime="application/json")
 
-# Display the "Reset History" button and confirmation message
-reset_button_clicked = st.button("Reset History", key="reset", help="Click to reset your history")
-if reset_button_clicked:
-    # Show confirmation message when Reset is clicked
-    confirm_reset = st.button("Confirm Reset")
-    cancel_reset = st.button("Cancel Reset")
-
-    if confirm_reset:
-        # Reset the history and give success message
-        st.session_state["history"] = []
-        st.success("Calculation history has been reset.")
-
-    elif cancel_reset:
-        st.warning("History reset has been canceled.")
-
-# Display the calculation history
-if st.session_state["history"]:
-    st.subheader("Calculation History")
-    for entry in st.session_state["history"]:
-        st.write(f"**{entry['name']}**: {entry['result']}")
+# Show a "Reset History" button and implement the confirmation pop-up
+if st.button("Reset History", key="reset", help="Click to reset your history"):
+    # Show the reset confirmation pop-up (using custom HTML/CSS)
+    st.markdown("""
+        <div class="modal" id="resetModal">
+            <div class="modal-content">
+                <p>Are you sure you want to reset the history?</p>
+                <div class="modal-buttons">
+                    <button class="modal-button confirm-btn" onclick="window.location.reload();">Confirm</button>
+                    <button class="modal-button cancel-btn" onclick="document.getElementById('resetModal').style.display='none';">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.getElementById('resetModal').style.display = 'block';
+        </script>
+    """, unsafe_allow_html=True)
