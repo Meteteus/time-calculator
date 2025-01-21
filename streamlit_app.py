@@ -101,8 +101,8 @@ if st.session_state["reset_confirm"]:
     if confirm_reset:
         st.session_state["history"] = []  # Clear the history
         st.session_state["reset_confirm"] = False  # Reset confirmation flag
-        st.success("History has been reset.")
+        st.success("History has been reset.")  # Show success message
 
     if cancel_reset:
         st.session_state["reset_confirm"] = False  # Reset confirmation flag
-        st.warning("History reset canceled.")
+        st.warning("History reset canceled.")  # Show warning message
