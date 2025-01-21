@@ -126,6 +126,7 @@ for i, row in enumerate(st.session_state["time_rows"]):
     with col1:
         if st.button(f"Remove", key=f"remove_row_{i}"):
             st.session_state["time_rows"].pop(i)  # Remove the row when "Remove" button is clicked
+            st.experimental_rerun()  # Force an immediate rerun to update the state
     with col2:
         row["hours"] = st.number_input(f"Row {i+1} - Hours", min_value=0, max_value=23, value=row["hours"], key=f"hours_{i}")
     with col3:
