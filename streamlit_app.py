@@ -94,6 +94,10 @@ if st.session_state["history"]:
         if checkbox:
             selected_calculations.append(entry['result'])
 
+    # If no checkboxes are selected, include all calculations by default
+    if not selected_calculations:
+        selected_calculations = [entry['result'] for entry in st.session_state["history"]]
+
     # Button to sum the selected results
     if st.button("Sum Selected Calculations"):
         if selected_calculations:
