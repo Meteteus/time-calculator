@@ -40,7 +40,7 @@ end_seconds = col3.number_input("Seconds", min_value=0, max_value=59, key="end_s
 # Input: Name for the calculation
 calculation_name = st.text_input("Name this calculation", "")
 
-# Add custom CSS to make the "Calculate" button blue
+# Add custom CSS to make the "Calculate" button blue and the "Reset History" button red
 st.markdown("""
     <style>
         .stButton.calculate-button button {
@@ -53,6 +53,18 @@ st.markdown("""
         }
         .stButton.calculate-button button:hover {
             background-color: #4682B4;  /* Darker blue */
+        }
+
+        .stButton.reset-button button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .stButton.reset-button button:hover {
+            background-color: darkred;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -101,23 +113,6 @@ if st.session_state["history"]:
     # Convert history to JSON for easy download
     history_json = json.dumps(st.session_state["history"], indent=4)
     st.download_button("Download History", data=history_json, file_name="calculation_history.json", mime="application/json")
-
-# Add custom CSS to make the "Reset History" button red
-st.markdown("""
-    <style>
-        .stButton.reset-button button {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .stButton.reset-button button:hover {
-            background-color: darkred;
-        }
-    </style>
-""", unsafe_allow_html=True)
 
 # Display the "Reset History" button and confirmation message
 reset_button_clicked = st.button("Reset History", key="reset", help="Click to reset your history")
