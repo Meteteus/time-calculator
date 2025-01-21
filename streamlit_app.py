@@ -77,6 +77,11 @@ if st.button("Calculate"):
 
             st.success(f"Time elapsed: {time_str}")
 
+# Button to reset history
+if st.button("Reset History"):
+    st.session_state["history"] = []
+    st.success("Calculation history has been reset.")
+
 # Display the calculation history
 if st.session_state["history"]:
     st.subheader("Calculation History")
