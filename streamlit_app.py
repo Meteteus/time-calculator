@@ -16,7 +16,11 @@ def convert_seconds_to_hhmmss(total_seconds):
 
 # Streamlit app layout
 st.title("Time Elapsed Calculator")
-st.write("Enter start time and end time, and calculate the elapsed time.")
+st.write("Enter start time and end time, name your calculation, and view your history.")
+
+# Initialize the history list in session state if not already there
+if "history" not in st.session_state:
+    st.session_state["history"] = []
 
 # Input: Start Time (3 columns for hours, minutes, seconds)
 st.subheader("Start Time")
@@ -31,6 +35,9 @@ col1, col2, col3 = st.columns(3)
 end_hours = col1.number_input("Hours", min_value=0, max_value=23, key="end_hours", value=0)
 end_minutes = col2.number_input("Minutes", min_value=0, max_value=59, key="end_minutes", value=0)
 end_seconds = col3.number_input("Seconds", min_value=0, max_value=59, key="end_seconds", value=0)
+
+# Input: Name for the calculation
+calculation_name = st.text_input("Name this calculation", "")
 
 # Button to calculate the time difference
 if st.button("Calculate"):
@@ -61,4 +68,17 @@ if st.button("Calculate"):
 
             # Convert elapsed time to hh:mm:ss
             time_str = convert_seconds_to_hhmmss(elapsed_seconds)
+
+            # Add the current calculation to the history
+            if calculation_name:
+                st.session_state["history"].append({"name": calculation_name, "result": time_str})
+            else:
+                st.session_state["history"].append({"name": "Unnamed", "result": time_str})
+
             st.success(f"Time elapsed: {time_str}")
+
+# Display the calculation history
+if st.session_state["history"]:
+    st.subheader("Calculation History")
+    for entry in st.session_state["history"]:
+        st.write(f"**{entry['name']}**: {entry['result']}")
