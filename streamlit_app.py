@@ -79,14 +79,17 @@ if st.session_state["history"]:
     for idx, entry in enumerate(st.session_state["history"], start=1):
         st.write(f"{idx}. {entry['name']}: {entry['result']}")
 
-# Button to reset history with confirmation
+# Button to reset history
 reset_history = st.button("Reset History", key="reset", help="Click to reset your history")
 
 if reset_history:
-    # Confirmation prompt for resetting history
-    reset_confirm = st.button("Are you sure you want to reset the history? Click to confirm.")
-    if reset_confirm:
+    # Show confirmation buttons
+    confirm_reset = st.button("Confirm Reset History")
+    cancel_reset = st.button("Cancel Reset")
+
+    if confirm_reset:
         st.session_state["history"] = []  # Clear the history
         st.success("History has been reset.")
-    else:
+
+    if cancel_reset:
         st.warning("History reset canceled.")
