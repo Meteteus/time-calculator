@@ -43,7 +43,7 @@ calculation_name = st.text_input("Name this calculation", "")
 # Add custom CSS to make the "Calculate" button blue
 st.markdown("""
     <style>
-        .stButton button {
+        .stButton.calculate-button button {
             background-color: #1E90FF;  /* Blue color */
             color: white;
             border: none;
@@ -51,14 +51,14 @@ st.markdown("""
             font-size: 14px;
             cursor: pointer;
         }
-        .stButton button:hover {
+        .stButton.calculate-button button:hover {
             background-color: #4682B4;  /* Darker blue */
         }
     </style>
 """, unsafe_allow_html=True)
 
 # Button to calculate the time difference
-if st.button("Calculate"):
+if st.button("Calculate", key="calculate", help="Click to calculate time elapsed", key="calculate"):
     # Check if the input is valid
     if (start_hours, start_minutes, start_seconds) == (0, 0, 0) and (end_hours, end_minutes, end_seconds) == (0, 0, 0):
         st.warning("Both start and end times are set to 0. Please input valid times.")
@@ -105,7 +105,7 @@ if st.session_state["history"]:
 # Add custom CSS to make the "Reset History" button red
 st.markdown("""
     <style>
-        .stButton button {
+        .stButton.reset-button button {
             background-color: red;
             color: white;
             border: none;
@@ -113,14 +113,14 @@ st.markdown("""
             font-size: 14px;
             cursor: pointer;
         }
-        .stButton button:hover {
+        .stButton.reset-button button:hover {
             background-color: darkred;
         }
     </style>
 """, unsafe_allow_html=True)
 
 # Display the "Reset History" button and confirmation message
-reset_button_clicked = st.button("Reset History")
+reset_button_clicked = st.button("Reset History", key="reset", help="Click to reset your history", key="reset")
 if reset_button_clicked:
     # Show confirmation message when Reset is clicked
     confirm_reset = st.button("Confirm Reset")
