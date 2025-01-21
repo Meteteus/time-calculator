@@ -122,7 +122,7 @@ if st.button("Add Row of Time"):
 
 # Remove rows when the "Remove" button is clicked
 for i, row in enumerate(st.session_state["time_rows"]):
-    col1, col2, col3, col4 = st.columns([1, 3, 3, 3])  # Moving remove button to left side
+    col1, col2, col3, col4 = st.columns([1, 3, 3, 3])  # Adjusted to vertically align
     with col1:
         # Use the button with the text "Remove"
         if st.button("Remove", key=f"remove_row_{i}", help="Click to remove this row"):
