@@ -40,6 +40,23 @@ end_seconds = col3.number_input("Seconds", min_value=0, max_value=59, key="end_s
 # Input: Name for the calculation
 calculation_name = st.text_input("Name this calculation", "")
 
+# Add custom CSS to make the "Calculate" button blue
+st.markdown("""
+    <style>
+        .stButton button {
+            background-color: #1E90FF;  /* Blue color */
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .stButton button:hover {
+            background-color: #4682B4;  /* Darker blue */
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Button to calculate the time difference
 if st.button("Calculate"):
     # Check if the input is valid
