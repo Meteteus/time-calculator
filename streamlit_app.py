@@ -20,7 +20,7 @@ def convert_hhmmss_to_seconds(time_str):
     return hours * 3600 + minutes * 60 + seconds
 
 # Streamlit app layout
-st.title("Elapsed Time Calculator")  # Title changed
+st.title("Time Calculator")  # Updated title
 st.write("Enter start time and end time, name your calculation, and view your history.")
 
 # Initialize the history list in session state if not already there
