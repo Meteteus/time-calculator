@@ -1,5 +1,4 @@
 import streamlit as st
-import json
 
 # Function to calculate time difference in seconds
 def calculate_time_difference(start_time, end_time):
@@ -40,109 +39,39 @@ end_seconds = col3.number_input("Seconds", min_value=0, max_value=59, key="end_s
 # Input: Name for the calculation
 calculation_name = st.text_input("Name this calculation", "")
 
-# Add custom CSS to style the buttons and modal
-st.markdown("""
-    <style>
-        .stButton button {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .stButton>button:first-child {
-            background-color: #1E90FF; /* Blue color */
-            color: white;
-        }
-        .stButton>button:first-child:hover {
-            background-color: #4682B4; /* Darker blue */
-        }
-        .stButton>button:last-child {
-            background-color: red; /* Red color */
-            color: white;
-        }
-        .stButton>button:last-child:hover {
-            background-color: darkred; /* Darker red */
-        }
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
-            overflow: auto;
-        }
-        .modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 8px;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .modal-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .confirm-btn {
-            background-color: green;
-            color: white;
-        }
-        .cancel-btn {
-            background-color: gray;
-            color: white;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
 # Button to calculate the time difference
 if st.button("Calculate", key="calculate", help="Click to calculate time elapsed"):
-    # Check if the input is valid
-    if (start_hours, start_minutes, start_seconds) == (0, 0, 0) and (end_hours, end_minutes, end_seconds) == (0, 0, 0):
-        st.warning("Both start and end times are set to 0. Please input valid times.")
+    # If the fields are empty, treat them as 0 when calculating
+    start_hours = start_hours if start_hours is not None else 0
+    start_minutes = start_minutes if start_minutes is not None else 0
+    start_seconds = start_seconds if start_seconds is not None else 0
+    end_hours = end_hours if end_hours is not None else 0
+    end_minutes = end_minutes if end_minutes is not None else 0
+    end_seconds = end_seconds if end_seconds is not None else 0
+
+    start_time = (start_hours, start_minutes, start_seconds)
+    end_time = (end_hours, end_minutes, end_seconds)
+
+    # Check if end time is earlier than start time
+    start_seconds_total = start_time[0]*3600 + start_time[1]*60 + start_time[2]
+    end_seconds_total = end_time[0]*3600 + end_time[1]*60 + end_time[2]
+
+    if end_seconds_total < start_seconds_total:
+        st.error("End time cannot be earlier than start time. Please enter valid times.")
     else:
-        # If the fields are empty, treat them as 0 when calculating
-        start_hours = start_hours if start_hours is not None else 0
-        start_minutes = start_minutes if start_minutes is not None else 0
-        start_seconds = start_seconds if start_seconds is not None else 0
-        end_hours = end_hours if end_hours is not None else 0
-        end_minutes = end_minutes if end_minutes is not None else 0
-        end_seconds = end_seconds if end_seconds is not None else 0
+        # Calculate time difference
+        elapsed_seconds = calculate_time_difference(start_time, end_time)
 
-        start_time = (start_hours, start_minutes, start_seconds)
-        end_time = (end_hours, end_minutes, end_seconds)
+        # Convert elapsed time to hh:mm:ss
+        time_str = convert_seconds_to_hhmmss(elapsed_seconds)
 
-        # Check if end time is earlier than start time
-        start_seconds_total = start_time[0]*3600 + start_time[1]*60 + start_time[2]
-        end_seconds_total = end_time[0]*3600 + end_time[1]*60 + end_time[2]
-
-        if end_seconds_total < start_seconds_total:
-            st.error("End time cannot be earlier than start time. Please enter valid times.")
+        # Add the current calculation to the history
+        if calculation_name:
+            st.session_state["history"].append({"name": calculation_name, "result": time_str})
         else:
-            # Calculate time difference
-            elapsed_seconds = calculate_time_difference(start_time, end_time)
+            st.session_state["history"].append({"name": "Unnamed", "result": time_str})
 
-            # Convert elapsed time to hh:mm:ss
-            time_str = convert_seconds_to_hhmmss(elapsed_seconds)
-
-            # Add the current calculation to the history
-            if calculation_name:
-                st.session_state["history"].append({"name": calculation_name, "result": time_str})
-            else:
-                st.session_state["history"].append({"name": "Unnamed", "result": time_str})
-
-            st.success(f"Time elapsed: {time_str}")
+        st.success(f"Time elapsed: {time_str}")
 
 # Display the history
 if st.session_state["history"]:
@@ -150,20 +79,14 @@ if st.session_state["history"]:
     for idx, entry in enumerate(st.session_state["history"], start=1):
         st.write(f"{idx}. {entry['name']}: {entry['result']}")
 
-# Show a "Reset History" button and implement the confirmation pop-up
-if st.button("Reset History", key="reset", help="Click to reset your history"):
-    # Show the reset confirmation pop-up (using custom HTML/CSS)
-    st.markdown("""
-        <div class="modal" id="resetModal">
-            <div class="modal-content">
-                <p>Are you sure you want to reset the history?</p>
-                <div class="modal-buttons">
-                    <button class="modal-button confirm-btn" onclick="window.location.reload();">Confirm</button>
-                    <button class="modal-button cancel-btn" onclick="document.getElementById('resetModal').style.display='none';">Cancel</button>
-                </div>
-            </div>
-        </div>
-        <script>
-            document.getElementById('resetModal').style.display = 'block';
-        </script>
-    """, unsafe_allow_html=True)
+# Button to reset history with confirmation
+reset_history = st.button("Reset History", key="reset", help="Click to reset your history")
+
+if reset_history:
+    # Confirmation prompt for resetting history
+    reset_confirm = st.button("Are you sure you want to reset the history? Click to confirm.")
+    if reset_confirm:
+        st.session_state["history"] = []  # Clear the history
+        st.success("History has been reset.")
+    else:
+        st.warning("History reset canceled.")
