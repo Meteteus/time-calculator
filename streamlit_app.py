@@ -43,12 +43,16 @@ if st.button("Calculate"):
     start_time = (start_hours, start_minutes, start_seconds)
     end_time = (end_hours, end_minutes, end_seconds)
 
-    # Calculate time difference
-    elapsed_seconds = calculate_time_difference(start_time, end_time)
+    # Check if end time is earlier than start time
+    start_seconds_total = start_time[0]*3600 + start_time[1]*60 + start_time[2]
+    end_seconds_total = end_time[0]*3600 + end_time[1]*60 + end_time[2]
     
-    if elapsed_seconds < 0:
-        st.write("End time cannot be earlier than start time.")
+    if end_seconds_total < start_seconds_total:
+        st.error("End time cannot be earlier than start time. Please enter valid times.")
     else:
+        # Calculate time difference
+        elapsed_seconds = calculate_time_difference(start_time, end_time)
+        
         # Convert elapsed time to hh:mm:ss
         time_str = convert_seconds_to_hhmmss(elapsed_seconds)
-        st.write(f"Time elapsed: {time_str}")
+        st.success(f"Time elapsed: {time_str}")
