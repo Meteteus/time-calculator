@@ -113,5 +113,6 @@ if st.session_state["history"]:
 
 # Button to reset the history
 if st.button("Reset Calculations", key="reset_calculations"):
-    st.session_state["history"] = []  # Reset history
+    st.session_state["history"].clear()  # Clear history immediately
+    st.experimental_rerun()  # Refresh the app to reset the state
     st.success("Calculation history has been reset.")
