@@ -85,15 +85,37 @@ if st.session_state["history"]:
     history_json = json.dumps(st.session_state["history"], indent=4)
     st.download_button("Download History", data=history_json, file_name="calculation_history.json", mime="application/json")
 
-# Ask for confirmation before resetting history
-if st.button("Reset History"):
-    reset_confirmation = st.selectbox("Are you sure you want to reset the history?", ["No", "Yes"])
-    
-    if reset_confirmation == "Yes":
-        st.session_state["history"] = []  # Reset history
+# Add custom CSS to make the "Reset History" button red
+st.markdown("""
+    <style>
+        .stButton button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .stButton button:hover {
+            background-color: darkred;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Display the "Reset History" button and confirmation message
+reset_button_clicked = st.button("Reset History")
+if reset_button_clicked:
+    # Show confirmation message when Reset is clicked
+    confirm_reset = st.button("Confirm Reset")
+    cancel_reset = st.button("Cancel Reset")
+
+    if confirm_reset:
+        # Reset the history and give success message
+        st.session_state["history"] = []
         st.success("Calculation history has been reset.")
-    elif reset_confirmation == "No":
-        st.warning("History reset was canceled.")
+
+    elif cancel_reset:
+        st.warning("History reset has been canceled.")
 
 # Display the calculation history
 if st.session_state["history"]:
