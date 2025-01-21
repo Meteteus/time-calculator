@@ -98,11 +98,13 @@ if st.session_state["reset_confirm"]:
     with col2:
         cancel_reset = st.button("Cancel Reset")
 
+    # If "Confirm Reset History" button is pressed
     if confirm_reset:
         st.session_state["history"] = []  # Clear the history
-        st.session_state["reset_confirm"] = False  # Reset confirmation flag
+        st.session_state["reset_confirm"] = False  # Hide the confirmation buttons
         st.success("History has been reset.")  # Show success message
 
+    # If "Cancel Reset" button is pressed
     if cancel_reset:
-        st.session_state["reset_confirm"] = False  # Reset confirmation flag
+        st.session_state["reset_confirm"] = False  # Hide the confirmation buttons
         st.warning("History reset canceled.")  # Show warning message
