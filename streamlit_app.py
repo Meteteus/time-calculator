@@ -22,6 +22,10 @@ st.write("Enter start time and end time, name your calculation, and view your hi
 if "history" not in st.session_state:
     st.session_state["history"] = []
 
+# Initialize the reset confirmation flag in session state if not already there
+if "reset_confirm" not in st.session_state:
+    st.session_state["reset_confirm"] = False
+
 # Input: Start Time (3 columns for hours, minutes, seconds)
 st.subheader("Start Time")
 col1, col2, col3 = st.columns(3)
@@ -82,14 +86,23 @@ if st.session_state["history"]:
 # Button to reset history
 reset_history = st.button("Reset History", key="reset", help="Click to reset your history")
 
+# Show reset confirmation if clicked
 if reset_history:
-    # Show confirmation buttons
-    confirm_reset = st.button("Confirm Reset History")
-    cancel_reset = st.button("Cancel Reset")
+    st.session_state["reset_confirm"] = True  # Set the reset confirmation flag to True
+
+if st.session_state["reset_confirm"]:
+    # Show confirmation and cancel buttons
+    col1, col2 = st.columns(2)
+    with col1:
+        confirm_reset = st.button("Confirm Reset History")
+    with col2:
+        cancel_reset = st.button("Cancel Reset")
 
     if confirm_reset:
         st.session_state["history"] = []  # Clear the history
+        st.session_state["reset_confirm"] = False  # Reset confirmation flag
         st.success("History has been reset.")
 
     if cancel_reset:
+        st.session_state["reset_confirm"] = False  # Reset confirmation flag
         st.warning("History reset canceled.")
