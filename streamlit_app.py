@@ -144,12 +144,11 @@ if st.button("Calculate", key="calculate", help="Click to calculate time elapsed
 
             st.success(f"Time elapsed: {time_str}")
 
-# Display the history download button
+# Display the history
 if st.session_state["history"]:
-    st.subheader("Download History")
-    # Convert history to JSON for easy download
-    history_json = json.dumps(st.session_state["history"], indent=4)
-    st.download_button("Download History", data=history_json, file_name="calculation_history.json", mime="application/json")
+    st.subheader("Calculation History")
+    for idx, entry in enumerate(st.session_state["history"], start=1):
+        st.write(f"{idx}. {entry['name']}: {entry['result']}")
 
 # Show a "Reset History" button and implement the confirmation pop-up
 if st.button("Reset History", key="reset", help="Click to reset your history"):
