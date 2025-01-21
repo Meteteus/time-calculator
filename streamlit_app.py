@@ -22,25 +22,25 @@ st.write("Enter start time and end time, and calculate the elapsed time.")
 st.subheader("Start Time")
 col1, col2, col3 = st.columns(3)
 with col1:
-    start_hours = st.number_input("Hours", min_value=0, max_value=23, key="start_hours", value=None)
+    start_hours = st.number_input("Hours", min_value=0, max_value=23, key="start_hours", value=0)
 with col2:
-    start_minutes = st.number_input("Minutes", min_value=0, max_value=59, key="start_minutes", value=None)
+    start_minutes = st.number_input("Minutes", min_value=0, max_value=59, key="start_minutes", value=0)
 with col3:
-    start_seconds = st.number_input("Seconds", min_value=0, max_value=59, key="start_seconds", value=None)
+    start_seconds = st.number_input("Seconds", min_value=0, max_value=59, key="start_seconds", value=0)
 
 # Input: End Time (3 columns for hours, minutes, seconds)
 st.subheader("End Time")
 col1, col2, col3 = st.columns(3)
 with col1:
-    end_hours = st.number_input("Hours", min_value=0, max_value=23, key="end_hours", value=None)
+    end_hours = st.number_input("Hours", min_value=0, max_value=23, key="end_hours", value=0)
 with col2:
-    end_minutes = st.number_input("Minutes", min_value=0, max_value=59, key="end_minutes", value=None)
+    end_minutes = st.number_input("Minutes", min_value=0, max_value=59, key="end_minutes", value=0)
 with col3:
-    end_seconds = st.number_input("Seconds", min_value=0, max_value=59, key="end_seconds", value=None)
+    end_seconds = st.number_input("Seconds", min_value=0, max_value=59, key="end_seconds", value=0)
 
 # Button to calculate the time difference
 if st.button("Calculate"):
-    # Assign 0 if the fields are empty (None) when the button is clicked
+    # If the fields are empty, treat them as 0 when calculating
     start_hours = start_hours if start_hours is not None else 0
     start_minutes = start_minutes if start_minutes is not None else 0
     start_seconds = start_seconds if start_seconds is not None else 0
