@@ -1,4 +1,5 @@
 import streamlit as st
+import json
 
 # Function to calculate time difference in seconds
 def calculate_time_difference(start_time, end_time):
@@ -77,10 +78,22 @@ if st.button("Calculate"):
 
             st.success(f"Time elapsed: {time_str}")
 
-# Button to reset history
+# Provide an option to download the history
+if st.session_state["history"]:
+    st.subheader("Download History")
+    # Convert history to JSON for easy download
+    history_json = json.dumps(st.session_state["history"], indent=4)
+    st.download_button("Download History", data=history_json, file_name="calculation_history.json", mime="application/json")
+
+# Ask for confirmation before resetting history
 if st.button("Reset History"):
-    st.session_state["history"] = []
-    st.success("Calculation history has been reset.")
+    reset_confirmation = st.selectbox("Are you sure you want to reset the history?", ["No", "Yes"])
+    
+    if reset_confirmation == "Yes":
+        st.session_state["history"] = []  # Reset history
+        st.success("Calculation history has been reset.")
+    elif reset_confirmation == "No":
+        st.warning("History reset was canceled.")
 
 # Display the calculation history
 if st.session_state["history"]:
