@@ -120,13 +120,14 @@ if "time_rows" not in st.session_state:
 if st.button("Add Row of Time"):
     st.session_state["time_rows"].append({"hours": 0, "minutes": 0, "seconds": 0})
 
-# Display each row of time input with the remove button on the left
+# Remove rows when the "Remove" button is clicked
 for i, row in enumerate(st.session_state["time_rows"]):
     col1, col2, col3, col4 = st.columns([1, 3, 3, 3])  # Moving remove button to left side
     with col1:
         if st.button(f"Remove", key=f"remove_row_{i}"):
-            st.session_state["time_rows"].pop(i)  # Remove the row when "Remove" button is clicked
-            st.experimental_rerun()  # Force an immediate rerun to update the state
+            # Removing row when "Remove" button is clicked
+            st.session_state["time_rows"].pop(i)
+            break  # Exit loop immediately after removal to prevent errors
     with col2:
         row["hours"] = st.number_input(f"Row {i+1} - Hours", min_value=0, max_value=23, value=row["hours"], key=f"hours_{i}")
     with col3:
