@@ -110,3 +110,22 @@ if st.session_state["history"]:
             st.success(f"Total time for selected calculations ({selected_names_str}): {total_time}")
         else:
             st.warning("No calculations selected to sum.")
+
+# New section to add time
+st.subheader("Add Time")
+if "time_rows" not in st.session_state:
+    st.session_state["time_rows"] = [{"hours": 0, "minutes": 0, "seconds": 0}]
+
+# Add a new row of time input when the "+" button is clicked
+if st.button("Add Row of Time"):
+    st.session_state["time_rows"].append({"hours": 0, "minutes": 0, "seconds": 0})
+
+# Display each row of time input
+for i, row in enumerate(st.session_state["time_rows"]):
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        row["hours"] = st.number_input(f"Row {i+1} - Hours", min_value=0, max_value=23, value=row["hours"], key=f"hours_{i}")
+    with col2:
+        row["minutes"] = st.number_input(f"Row {i+1} - Minutes", min_value=0, max_value=59, value=row["minutes"], key=f"minutes_{i}")
+    with col3:
+        row["seconds"] = st.number_input(f"Row {i+1} - Seconds", min_value=0, max_value=59, value=row["seconds"], key=f"seconds_{i}")
