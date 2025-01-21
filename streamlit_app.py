@@ -132,3 +132,13 @@ for i, row in enumerate(st.session_state["time_rows"]):
     with col4:
         if st.button(f"-", key=f"remove_row_{i}"):
             st.session_state["time_rows"].pop(i)  # Remove the row when "-" button is clicked
+
+# Add a button to calculate the total time from all rows added
+if st.button("Calculate Total Time from Rows"):
+    total_seconds = 0
+    for row in st.session_state["time_rows"]:
+        row_seconds = row["hours"] * 3600 + row["minutes"] * 60 + row["seconds"]
+        total_seconds += row_seconds
+    
+    total_time = convert_seconds_to_hhmmss(total_seconds)
+    st.success(f"Total time from all rows: {total_time}")
