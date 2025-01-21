@@ -113,6 +113,6 @@ if st.session_state["history"]:
 
 # Button to reset the history
 if st.button("Reset Calculations", key="reset_calculations"):
-    st.session_state["history"].clear()  # Clear history immediately
-    st.experimental_rerun()  # Refresh the app to reset the state
-    st.success("Calculation history has been reset.")
+    st.session_state["history"] = []  # Clear history immediately
+    st.session_state["sum"] = 0  # Optional: Clear the sum value if needed
+    st.write("Calculation history has been reset.")  # Inform the user
