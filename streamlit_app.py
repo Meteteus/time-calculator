@@ -65,8 +65,21 @@ if st.button("Calculate"):
 
 # Reset button to clear input fields
 if st.button("Reset"):
-    # Resetting all inputs to 0 manually
-    start_hours = start_minutes = start_seconds = 0
-    end_hours = end_minutes = end_seconds = 0
-    # Clear the input fields by just resetting them to 0, no rerun needed
-    st.experimental_rerun()  # Optional: Trigger a rerun of the app after reset
+    # Instead of using st.experimental_rerun, just reset the inputs manually
+    st.session_state["start_hours"] = 0
+    st.session_state["start_minutes"] = 0
+    st.session_state["start_seconds"] = 0
+    st.session_state["end_hours"] = 0
+    st.session_state["end_minutes"] = 0
+    st.session_state["end_seconds"] = 0
+
+    # Update the input fields with the reset values
+    start_hours = 0
+    start_minutes = 0
+    start_seconds = 0
+    end_hours = 0
+    end_minutes = 0
+    end_seconds = 0
+
+    # Optionally notify the user
+    st.info("Fields have been reset.")
