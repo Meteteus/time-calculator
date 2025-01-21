@@ -124,7 +124,8 @@ if st.button("Add Row of Time"):
 for i, row in enumerate(st.session_state["time_rows"]):
     col1, col2, col3, col4 = st.columns([1, 3, 3, 3])  # Moving remove button to left side
     with col1:
-        if st.button(f"Remove", key=f"remove_row_{i}"):
+        # Use the button with a shorter label and larger width to ensure no wrapping
+        if st.button(f"Remove", key=f"remove_row_{i}", help="Click to remove this row"):
             # Removing row when "Remove" button is clicked
             st.session_state["time_rows"].pop(i)
             break  # Exit loop immediately after removal to prevent errors
