@@ -58,7 +58,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Button to calculate the time difference
-if st.button("Calculate", key="calculate", help="Click to calculate time elapsed", key="calculate"):
+if st.button("Calculate", key="calculate", help="Click to calculate time elapsed"):
     # Check if the input is valid
     if (start_hours, start_minutes, start_seconds) == (0, 0, 0) and (end_hours, end_minutes, end_seconds) == (0, 0, 0):
         st.warning("Both start and end times are set to 0. Please input valid times.")
@@ -120,7 +120,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Display the "Reset History" button and confirmation message
-reset_button_clicked = st.button("Reset History", key="reset", help="Click to reset your history", key="reset")
+reset_button_clicked = st.button("Reset History", key="reset", help="Click to reset your history")
 if reset_button_clicked:
     # Show confirmation message when Reset is clicked
     confirm_reset = st.button("Confirm Reset")
