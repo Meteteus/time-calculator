@@ -62,24 +62,3 @@ if st.button("Calculate"):
             # Convert elapsed time to hh:mm:ss
             time_str = convert_seconds_to_hhmmss(elapsed_seconds)
             st.success(f"Time elapsed: {time_str}")
-
-# Reset button to clear input fields
-if st.button("Reset"):
-    # Instead of using st.experimental_rerun, just reset the inputs manually
-    st.session_state["start_hours"] = 0
-    st.session_state["start_minutes"] = 0
-    st.session_state["start_seconds"] = 0
-    st.session_state["end_hours"] = 0
-    st.session_state["end_minutes"] = 0
-    st.session_state["end_seconds"] = 0
-
-    # Update the input fields with the reset values
-    start_hours = 0
-    start_minutes = 0
-    start_seconds = 0
-    end_hours = 0
-    end_minutes = 0
-    end_seconds = 0
-
-    # Optionally notify the user
-    st.info("Fields have been reset.")
