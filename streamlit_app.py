@@ -87,22 +87,26 @@ if submit_button:
 if st.session_state["history"]:
     st.subheader("Calculation History")
     selected_calculations = []
+    selected_names = []
 
     for idx, entry in enumerate(st.session_state["history"], start=1):
         # Display each calculation with a checkbox to select it
         checkbox = st.checkbox(f"Include {entry['name']} - {entry['result']}", key=f"checkbox_{idx}")
         if checkbox:
             selected_calculations.append(entry['result'])
+            selected_names.append(entry['name'])
 
     # If no checkboxes are selected, include all calculations by default
     if not selected_calculations:
         selected_calculations = [entry['result'] for entry in st.session_state["history"]]
+        selected_names = [entry['name'] for entry in st.session_state["history"]]
 
     # Button to sum the selected results
     if st.button("Sum Selected Calculations"):
         if selected_calculations:
             total_seconds = sum(convert_hhmmss_to_seconds(entry) for entry in selected_calculations)
             total_time = convert_seconds_to_hhmmss(total_seconds)
-            st.success(f"Total time for selected calculations: {total_time}")
+            selected_names_str = ", ".join(selected_names)
+            st.success(f"Total time for selected calculations ({selected_names_str}): {total_time}")
         else:
             st.warning("No calculations selected to sum.")
