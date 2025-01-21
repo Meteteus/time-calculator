@@ -124,8 +124,8 @@ if st.button("Add Row of Time"):
 for i, row in enumerate(st.session_state["time_rows"]):
     col1, col2, col3, col4 = st.columns([1, 3, 3, 3])  # Moving remove button to left side
     with col1:
-        if st.button(f"-", key=f"remove_row_{i}"):
-            st.session_state["time_rows"].pop(i)  # Remove the row when "-" button is clicked
+        if st.button(f"Remove", key=f"remove_row_{i}"):
+            st.session_state["time_rows"].pop(i)  # Remove the row when "Remove" button is clicked
     with col2:
         row["hours"] = st.number_input(f"Row {i+1} - Hours", min_value=0, max_value=23, value=row["hours"], key=f"hours_{i}")
     with col3:
