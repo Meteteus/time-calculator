@@ -14,6 +14,11 @@ def convert_seconds_to_hhmmss(total_seconds):
     seconds = total_seconds % 60
     return f"{hours:02}:{minutes:02}:{seconds:02}"
 
+# Function to convert hh:mm:ss to total seconds
+def convert_hhmmss_to_seconds(time_str):
+    hours, minutes, seconds = map(int, time_str.split(":"))
+    return hours * 3600 + minutes * 60 + seconds
+
 # Streamlit app layout
 st.title("Time Elapsed Calculator")
 st.write("Enter start time and end time, name your calculation, and view your history.")
@@ -83,3 +88,9 @@ if st.session_state["history"]:
     st.subheader("Calculation History")
     for idx, entry in enumerate(st.session_state["history"], start=1):
         st.write(f"{idx}. {entry['name']}: {entry['result']}")
+
+    # Button to sum all the results
+    if st.button("Sum All Calculations"):
+        total_seconds = sum(convert_hhmmss_to_seconds(entry['result']) for entry in st.session_state["history"])
+        total_time = convert_seconds_to_hhmmss(total_seconds)
+        st.success(f"Total time for all calculations: {total_time}")
