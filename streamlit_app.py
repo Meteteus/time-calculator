@@ -86,11 +86,20 @@ if submit_button:
 # Display the history
 if st.session_state["history"]:
     st.subheader("Calculation History")
+    selected_calculations = []
+    
     for idx, entry in enumerate(st.session_state["history"], start=1):
-        st.write(f"{idx}. {entry['name']}: {entry['result']}")
-
-    # Button to sum all the results
-    if st.button("Sum All Calculations"):
-        total_seconds = sum(convert_hhmmss_to_seconds(entry['result']) for entry in st.session_state["history"])
-        total_time = convert_seconds_to_hhmmss(total_seconds)
-        st.success(f"Total time for all calculations: {total_time}")
+        # Display each calculation with a checkbox to select it
+        with st.expander(f"{idx}. {entry['name']}: {entry['result']}"):
+            checkbox = st.checkbox(f"Include {entry['name']}", key=f"checkbox_{idx}")
+            if checkbox:
+                selected_calculations.append(entry['result'])
+    
+    # Button to sum the selected results
+    if st.button("Sum Selected Calculations"):
+        if selected_calculations:
+            total_seconds = sum(convert_hhmmss_to_seconds(entry) for entry in selected_calculations)
+            total_time = convert_seconds_to_hhmmss(total_seconds)
+            st.success(f"Total time for selected calculations: {total_time}")
+        else:
+            st.warning("No calculations selected to sum.")
