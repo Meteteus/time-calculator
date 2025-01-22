@@ -20,7 +20,7 @@ def convert_hhmmss_to_seconds(time_str):
     return hours * 3600 + minutes * 60 + seconds
 
 # Streamlit app layout
-st.title("Time Calculator")  # Updated title
+st.title("Time Calculator")  # Title changed
 st.write("Enter start time and end time, name your calculation, and view your history.")
 
 # Initialize the history list in session state if not already there
@@ -120,15 +120,12 @@ if "time_rows" not in st.session_state:
 if st.button("Add Row of Time"):
     st.session_state["time_rows"].append({"hours": 0, "minutes": 0, "seconds": 0})
 
-# Remove rows when the "Remove" button is clicked
+# Display each row of time input with the remove button on the left
 for i, row in enumerate(st.session_state["time_rows"]):
-    col1, col2, col3, col4 = st.columns([1, 3, 3, 3])  # Adjusted to vertically align
+    col1, col2, col3, col4 = st.columns([1, 3, 3, 3])  # Moving remove button to left side
     with col1:
-        # Use the button with the text "Remove"
-        if st.button("Remove", key=f"remove_row_{i}", help="Click to remove this row"):
-            # Removing row when "Remove" button is clicked
-            st.session_state["time_rows"].pop(i)
-            break  # Exit loop immediately after removal to prevent errors
+        if st.button(f"Remove", key=f"remove_row_{i}"):
+            st.session_state["time_rows"].pop(i)  # Remove the row when "Remove" button is clicked
     with col2:
         row["hours"] = st.number_input(f"Row {i+1} - Hours", min_value=0, max_value=23, value=row["hours"], key=f"hours_{i}")
     with col3:
@@ -137,7 +134,7 @@ for i, row in enumerate(st.session_state["time_rows"]):
         row["seconds"] = st.number_input(f"Row {i+1} - Seconds", min_value=0, max_value=59, value=row["seconds"], key=f"seconds_{i}")
 
 # Add a button to calculate the total time from all rows added
-if st.button("Calculate Total Time from Rows"):
+if st.button("Add Time"):
     total_seconds = 0
     for row in st.session_state["time_rows"]:
         row_seconds = row["hours"] * 3600 + row["minutes"] * 60 + row["seconds"]
